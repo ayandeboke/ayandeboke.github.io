@@ -133,7 +133,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">3</span></a>
+    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">4</span></a>
 
   </li>
   </ul>
@@ -159,6 +159,93 @@
 
           <div class="content index posts-expand">
             
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/01/15/%E5%8F%A4%E5%85%B8%E5%AF%86%E7%A0%81%EF%BC%881%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/Screenshot_20230111_174500_edit_2247896994001984.jpg">
+      <meta itemprop="name" content="阿炎">
+      <meta itemprop="description" content="愿你我前程似锦">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="繁星雨鸣">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/01/15/%E5%8F%A4%E5%85%B8%E5%AF%86%E7%A0%81%EF%BC%881%EF%BC%89/" class="post-title-link" itemprop="url">未命名</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-01-15 21:14:39" itemprop="dateCreated datePublished" datetime="2023-01-15T21:14:39+08:00">2023-01-15</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>一. 移位密码</p>
+<ol>
+<li>简单移位密码<br>可以理解为明文根据密钥进行了位置的变换而得到的密文。</li>
+</ol>
+<p>例如：</p>
+<p>​ 明文：m &#x3D; flag{easy_easy_crypto}</p>
+<p>​ 密钥：k &#x3D; 3124</p>
+<p>​ 则明文将以k的长度进行分割，得到如下</p>
+<p>​ flag {eas y_ea sy_c rypt o}</p>
+<p>​ 然后按照密钥3124的顺序进行替换。得到如下</p>
+<p>​ lafg ea{s _eya y_sc yprt }o</p>
+<p>​ 所以密文为lafgea{s_eyay_scyprt}o</p>
+<p>脚本如下：<br>#加密</p>
+<p>txt&#x3D;input(‘明文:’).strip()<br>key&#x3D;input(‘密钥:’).strip()<br>t&#x3D;len(key)<br>mi&#x3D;’’<br>for i in range(0,len(txt),t):<br>    if i+t&gt;len(txt):<br>        temp&#x3D;txt[i:]<br>    else:<br>        temp&#x3D;txt[i:i+t]<br>    ‘’’#法一<br>    pd&#x3D;dict(zip(key,temp))<br>    pd&#x3D;dict(sorted(pd.items(),key&#x3D;lambda x:x[0]))#根据关键字的大小进行排序<br>    for j in range(1,t+1):<br>        if str(j) in pd:<br>            mi+&#x3D;pd.get(str(j))<br>    ‘’’#法二<br>    c &#x3D; [‘’]*t<br>    for j in range(len(temp)):<br>        c[int(key[j])-1] &#x3D; temp[j]<br>    mi +&#x3D; ‘’.join(c)</p>
+<p>print(mi)      </p>
+<p>#解密<br>txt&#x3D;input(‘密文:’).strip()<br>key&#x3D;input(‘密钥:’).strip()<br>t&#x3D;len(key)<br>m&#x3D;’’</p>
+<p>for i in range(0,len(txt),t):<br>    c &#x3D; [‘’]*t<br>    if i+t&gt;len(txt):<br>        temp&#x3D;txt[i:]<br>        use &#x3D; []<br>        for j in range(len(temp)):<br>            use.append(int(key[j]) - 1)<br>        use.sort()#相当于压缩掉空的位置，但字母排列的相对顺序不变<br>        for j in range(len(temp)):<br>            c[j] &#x3D; temp[use.index(int(key[j])-1)]#字符原排列所在的位置相当于sort之后所在的位置<br>    else:<br>        temp&#x3D;txt[i:i+t]<br>        for j in range(len(temp)):<br>            c[j] &#x3D; temp[int(key[j]) - 1]<br>    m +&#x3D; ‘’.join(c)</p>
+<p>print(m)<br>2. 曲路密码<br>将明文填入一个表中，并按照一定的曲路遍历。</p>
+<p>例如：this is a test text<br><img src="https://huatu.98youxi.com/markdown/work/uploads/upload_c9ea7dc62096fc7db219e03454a67aac.png"><br>得到密文“istxettsthiseta”<br>3. 云影密码<br>云影密码仅包含01248五个数字，其中0用于分割，其余数字用于做加和操作之后转换为明文。</p>
+<p>例如:</p>
+<p>​ 8842101220480224404014224202480122</p>
+<p>​ 去除0之后为：88421 122 48 2244 4 142242 248 122</p>
+<p>​ 每组累加之后为: 23 5 12 12 4 15 14 5</p>
+<p>​ 根据密码表“abcdefghijklmnopqrstuvwxyz”，数字即为字符下标。</p>
+<p>解密脚本：<br>def c01248_decode(c):<br>    txt &#x3D; c.split(‘0’)<br>    temp &#x3D; ‘abcdefghijklmnopqrstuvwxyz’<br>    m &#x3D; ‘’<br>    for i in txt:<br>        pd &#x3D; 0<br>        for j in i:<br>            pd +&#x3D; int(j)<br>        m +&#x3D; temp[pd-1]<br>    return m</p>
+<p>m &#x3D; input().strip()<br>print(c01246_decode(m))<br>4. 栅栏密码<br>​ 把明文分成n个一组，然后把每组的第一个字符连起来，形成一段无规律的字符。</p>
+<p>​ 例：明文为‘wearefamily’，密钥为4，先用密钥’4’将明文每4个字符分为一组’wear||efam||ily’，然后依次取出每组第1，2，3个字符，组为’wei|efl||aay||rm’，再连接起来就可以得到密文’weieflaarm’。</p>
+<p>​ 加密解密脚本：</p>
+<p>​ 如果知道密钥（n）和密文（长度m），其中m%n&#x3D;&#x3D;0，那么明文就为密文按照密钥为m&#x2F;n进行栅栏加密的结果。<br>#均分的<br>txt &#x3D; input().strip()<br>m &#x3D; len(txt)<br>for i in range(2,m):<br>    if m%i &#x3D;&#x3D; 0:<br>        print(f’{i}栏加密&#x2F;解密:’,end &#x3D; ‘’)<br>        for j in range(i):<br>            for k in range(j,m,i):<br>                print(txt[k],end &#x3D; ‘’)<br>        print()</p>
+<p>#不均分的<br>txt &#x3D; input().strip()<br>m &#x3D; len(txt)<br>for i in range(2,m):<br>    print(f’{i}栏加密&#x2F;解密:’,end &#x3D; ‘’)<br>    for j in range(i):<br>        for k in range(j,m,i):<br>            print(txt[k],end &#x3D; ‘’)<br>    print()<br>[栅栏密码加解密](栅栏加密&#x2F;解密 - Bugku CTF)<br>————————————————<br>版权声明：本文为CSDN博主「gal2xy」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。<br>原文链接：<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_52193383/article/details/119521612">https://blog.csdn.net/qq_52193383/article/details/119521612</a><br>————————————————</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -424,7 +511,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-count">4</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
